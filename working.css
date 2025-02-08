@@ -1,0 +1,89 @@
+ .options-container button {
+      display: inline-block;
+      margin: 10px;
+    }
+    .options-container {
+      display: flex;
+      justify-content: space-around;
+      padding: 20px;
+    }
+    
+
+#logo {
+color: #0000FF; /* Blue color */
+font-size: 36px;
+font-weight: bold;
+text-align: center;
+}
+
+.search-container {
+margin-top: 20px;
+display: flex;
+}
+
+#search-input {
+padding: 10px;
+width: 70%;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+#search-button {
+padding: 10px;
+width: 30%;
+border: none;
+border-radius: 5px;
+background-color: #4CAF50;
+color: #fff;
+cursor: pointer;
+}
+
+.options-container {
+display: flex;
+justify-content: space-around;
+margin-top: 20px;
+}
+
+.options-container button {
+padding: 10px;
+border: none;
+border-radius: 5px;
+background-color: #4CAF50;
+color: #fff;
+cursor: pointer;
+}
+
+.tracks-container {
+margin-top: 40px;
+}
+
+.tracks-container ul {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.tracks-container li {
+padding: 10px;
+border-bottom: 1px solid #ccc;
+}
+
+.tracks-container li:last-child {
+border-bottom: none;
+}
+
+#variousTracks {
+padding: 20px;
+border: 1px solid #ddd;
+padding-bottom: 50px;
+background-color: #f9f9f9;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#search {
+padding: 20px;
+border: 1px solid #ddd;
+padding-bottom: 50px;
+background-color: #f9f9f9;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

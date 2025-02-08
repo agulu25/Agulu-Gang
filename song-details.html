@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Details</title>
+    <link rel="stylesheet" href="working.css">
+</head>
+<body style="background-color: black; position: relative;">
+    <div class="container">
+        <!-- ... -->
+    <!-- Menu Toggle -->
+    <div class="menu-toggle" style="position: absolute; top: 20px; left: 20px; cursor: pointer; font-size: 20px; color: #fff; text-align: center; line-height: 7px;">
+        <span style="display:block;">&#8226;</span>
+        <span style="display:block;">&#8226;</span>
+        <span style="display:block;">&#8226;</span>
+    </div>
+
+    <!-- Menu Options -->
+    <div class="menu-options" style="position: absolute; top: 50px; left: 10px; background-color: #fff; padding: 10px; border: 1px solid #ddd; display: none; width: 150px; text-align: left;">
+        <a href="index.html" style="text-decoration: none; color: #333; display: block; padding: 10px; border-bottom: 1px solid #ddd;">Home</a>
+        <a href="new-music.html" style="text-decoration: none; color: #333; display: block; padding: 10px; border-bottom: 1px solid #ddd;">New Music</a>
+        <a href="album.html" style="text-decoration: none; color: #333; display: block; padding: 10px; border-bottom: 1px solid #ddd;">Album</a>
+        <a href="artist.html" style="text-decoration: none; color: #333; display: block; padding: 10px; border-bottom: 1px solid #ddd;">Artist</a>
+        <a href="trending.html" style="text-decoration: none; color: #333; display: block; padding: 10px; border-bottom: 1px solid #ddd;">Trending</a>
+    </div>
+       
+        <header style="background-color: black; color: #fff; padding: 20px; text-align: center;">
+            <h1 id="logo" style="font-size: 36px; font-weight: bold; text-shadow: 2px 2px 5px #000;">AGULU MUSIC</h1>
+            </header>
+        
+        <div class="options-container" style="background-color: green; padding: 20px; text-align: center;">
+            <a href="new-music.html"><button id="newMusicButton">New Music</button></a>
+            <a href="album.html"><button id="albumButton">Album</button></a>
+            <a href="artist.html"><button id="artistButton">Artist</button></a>
+            <a href="trending.html"><button id="trendingButton">Trending</button></a>
+        </div>
+        <div class="tracks-container">
+            <h2 id="tracks-heading"></h2>
+            <ul id="variousTracks"></ul>
+        </div>
+        <div class="footer" style="background-color: black; color: #fff; padding: 30px; text-align: center; bottom: 0">
+            <a href="contact-us.html" style="color: #fff; text-decoration: none; margin-right: 20px;">Contact Us</a>
+            <a href="about-us.html" style="color: #fff; text-decoration: none;">About Us</a>
+        </div>
+    
+    <div id="options-div">
+        <!-- Options content here -->
+    </div>
+    <div id="song-functionality-div" style="display: none;">
+        <!-- Song functionality content here -->
+    </div>
+    <script>
+          document.addEventListener("DOMContentLoaded", function() {
+// Get references to the elements
+const menuToggle = document.querySelector(".menu-toggle");
+const menuOptions = document.querySelector(".menu-options");
+
+
+ // Add event listeners to the menu toggle and links
+if (menuToggle && menuOptions) {
+menuToggle.addEventListener("click", function() {
+menuOptions.style.display = menuOptions.style.display === "block" ? "none" : "block";
+});
+
+// Add an event listener to hide the menu when clicking outside
+document.addEventListener("click", function(event) {
+  if (!menuToggle.contains(event.target) && !menuOptions.contains(event.target)) {
+    menuOptions.style.display = "none";
+  }
+});
+
+}
+        const urlParams = new URLSearchParams(window.location.search);
+        const songTitle = urlParams.get('title');
+        const songArtist = urlParams.get('artist');
+        const songAlbum = urlParams.get('album');
+        const songRelease = urlParams.get('release');
+        const songDuration = urlParams.get('duration');
+        const songProducer = urlParams.get('producer');
+        const songGenre = urlParams.get('genre');
+        const songFile = urlParams.get('file');
+        const songArtwork = urlParams.get('artwork');
+
+        let favorites = JSON.parse(localStorage.getItem("favorites")) || {};
+        let userId = "guest_" + Math.random().toString(36).substr(2, 9);
+
+        function displaySongDetails(song) {
+            const songListDiv = document.getElementById("variousTracks");
+            const optionsDiv = document.getElementById("options-div");
+            const tracksHeading = document.getElementById("tracks-heading");
+            if (tracksHeading) {
+                tracksHeading.innerHTML = "";
+            }
+            songListDiv.innerHTML = "";
+            optionsDiv.innerHTML = "";
+            const isFavorited = favorites[song.file];
+            songListDiv.innerHTML = `
+                <div style="background-color: silver; padding: 10px; position: relative; z-index: 1;" class="track-details">
+                    <img src="${song.artwork}" alt="${song.title} cover art" style="width: 335px; height: 300px; margin-right: 20px;">
+                    <h2>${song.title}</h2>
+                    <p>Artist: ${song.artist}</p>
+                    <p>Album: ${song.album}</p>
+                    <p>Release: ${song.release}</p>
+                    <p>Duration: ${song.duration}</p>
+                    <p>Producer: ${song.producer}</p>
+                    <p>Genre: ${song.genre}</p>
+                    <!-- Audio Player (Above) -->
+                    <div style="margin-bottom: 15px;">
+                        <audio id="audio-element" controls>
+                            <source src="${song.file}" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <!-- Buttons Section (Below) -->
+                    <div style="display: flex; align-items: center; margin-top: 20px;">
+                        <button id="download-button" style="background-color: green; color: white; padding: 10px; margin-right: 10px;"> Download </button>
+                        <button id="favorite-button" style="background-color: ${isFavorited ? 'green' : 'red'}; color: white; padding: 10px; margin-left: 10px;"> ${isFavorited ? "Unfavorite" : "Favorite"} </button>
+                    </div>
+                    <div id="notification" style="display: none; background-color: green; color: white; padding: 10px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+                </div>
+            `;
+            const favoriteButton = document.getElementById("favorite-button");
+            const downloadButton = document.getElementById("download-button");
+            const notificationDiv = document.getElementById("notification");
+            downloadButton.addEventListener("click", () => {
+                notificationDiv.style.display = "block";
+                notificationDiv.textContent = "Downloading...";
+                setTimeout(() => {
+                    const link = document.createElement("a");
+                    link.href = song.file;
+                    link.download = song.title;
+                    link.click();
+                    notificationDiv.style.display = "none";
+                }, 5000);
+            });
+            favoriteButton.addEventListener("click", () => {
+                if (favoriteButton.textContent === "Favorite") {
+                    favorites[song.file] = true;
+                    favoriteButton.textContent = "Unfavorite";
+                    favoriteButton.style.backgroundColor = "green";
+                } else {
+                    delete favorites[song.file];
+                    favoriteButton.textContent = "Favorite";
+                    favoriteButton.style.backgroundColor = "red";
+                }
+                localStorage.setItem("favorites", JSON.stringify(favorites));
+            });
+        }
+
+        displaySongDetails({
+            title: songTitle,
+            artist: songArtist,
+            album: songAlbum,
+            release: songRelease,
+            duration: songDuration,
+            producer: songProducer,
+            genre: songGenre,
+            file: songFile,
+            artwork: songArtwork
+        });
+        });
+    </script>
+    
+</body>
+</html>
